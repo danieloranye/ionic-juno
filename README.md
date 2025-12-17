@@ -8,7 +8,7 @@
 
 ### Option 1: Single Command (Recommended)
 ```bash
-cd c:\Users\HP\.gemini\antigravity\playground\ionic-juno
+cd ~\ionic-juno
 npm run dev
 ```
 
@@ -21,13 +21,13 @@ If you prefer to see logs separately:
 
 **Terminal 1 (Backend):**
 ```bash
-cd c:\Users\HP\.gemini\antigravity\playground\ionic-juno
+cd ~\ionic-juno
 npm run server
 ```
 
 **Terminal 2 (Frontend):**
 ```bash
-cd c:\Users\HP\.gemini\antigravity\playground\ionic-juno
+cd ~\ionic-juno
 npx vite
 ```
 
