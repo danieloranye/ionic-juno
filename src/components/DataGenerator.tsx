@@ -6,18 +6,102 @@ import { api } from '../api/adapter';
 // For now, hardcode some faker mapping options
 
 const FAKER_OPTIONS = [
-    { label: 'Name - Full Name', value: 'person.fullName' },
-    { label: 'Name - First Name', value: 'person.firstName' },
-    { label: 'Name - Last Name', value: 'person.lastName' },
+    // Person
+    { label: 'Person - Full Name', value: 'person.fullName' },
+    { label: 'Person - First Name', value: 'person.firstName' },
+    { label: 'Person - Last Name', value: 'person.lastName' },
+    { label: 'Person - Middle Name', value: 'person.middleName' },
+    { label: 'Person - Prefix', value: 'person.prefix' },
+    { label: 'Person - Suffix', value: 'person.suffix' },
+    { label: 'Person - Job Title', value: 'person.jobTitle' },
+    { label: 'Person - Job Area', value: 'person.jobArea' },
+    { label: 'Person - Bio', value: 'person.bio' },
+    { label: 'Person - Gender', value: 'person.gender' },
+
+    // Internet
     { label: 'Internet - Email', value: 'internet.email' },
+    { label: 'Internet - Username', value: 'internet.username' },
+    { label: 'Internet - URL', value: 'internet.url' },
+    { label: 'Internet - Domain Name', value: 'internet.domainName' },
+    { label: 'Internet - IP Address', value: 'internet.ip' },
+    { label: 'Internet - IPv6', value: 'internet.ipv6' },
+    { label: 'Internet - User Agent', value: 'internet.userAgent' },
+    { label: 'Internet - Password', value: 'internet.password' },
+    { label: 'Internet - MAC Address', value: 'internet.mac' },
+
+    // Location
     { label: 'Location - City', value: 'location.city' },
     { label: 'Location - Country', value: 'location.country' },
-    { label: 'Date - Past', value: 'date.past' },
+    { label: 'Location - State', value: 'location.state' },
+    { label: 'Location - Street Address', value: 'location.streetAddress' },
+    { label: 'Location - Zip Code', value: 'location.zipCode' },
+    { label: 'Location - Latitude', value: 'location.latitude' },
+    { label: 'Location - Longitude', value: 'location.longitude' },
+    { label: 'Location - Time Zone', value: 'location.timeZone' },
+
+    // Company
+    { label: 'Company - Name', value: 'company.name' },
+    { label: 'Company - Catchphrase', value: 'company.catchPhrase' },
+    { label: 'Company - Business Type', value: 'company.buzzPhrase' },
+
+    // Commerce
+    { label: 'Commerce - Product Name', value: 'commerce.productName' },
+    { label: 'Commerce - Product Description', value: 'commerce.productDescription' },
+    { label: 'Commerce - Price', value: 'commerce.price' },
+    { label: 'Commerce - Department', value: 'commerce.department' },
+    { label: 'Commerce - Product Material', value: 'commerce.productMaterial' },
+    { label: 'Commerce - Product Adjective', value: 'commerce.productAdjective' },
+
+    // Finance
     { label: 'Finance - Account Name', value: 'finance.accountName' },
     { label: 'Finance - IBAN', value: 'finance.iban' },
+    { label: 'Finance - BIC', value: 'finance.bic' },
     { label: 'Finance - Amount', value: 'finance.amount' },
-    { label: 'Custom - Covid Vaccine', value: 'custom.vaccine' },
-    { label: 'Custom - Insurance Policy', value: 'custom.policy' },
+    { label: 'Finance - Transaction Type', value: 'finance.transactionType' },
+    { label: 'Finance - Currency Code', value: 'finance.currencyCode' },
+    { label: 'Finance - Currency Name', value: 'finance.currencyName' },
+    { label: 'Finance - Credit Card Number', value: 'finance.creditCardNumber' },
+    { label: 'Finance - Credit Card CVV', value: 'finance.creditCardCVV' },
+
+    // Date & Time
+    { label: 'Date - Past', value: 'date.past' },
+    { label: 'Date - Future', value: 'date.future' },
+    { label: 'Date - Recent', value: 'date.recent' },
+    { label: 'Date - Birthdate', value: 'date.birthdate' },
+    { label: 'Date - Month', value: 'date.month' },
+    { label: 'Date - Weekday', value: 'date.weekday' },
+
+    // Phone
+    { label: 'Phone - Number', value: 'phone.number' },
+    { label: 'Phone - IMEI', value: 'phone.imei' },
+
+    // Vehicle
+    { label: 'Vehicle - Type', value: 'vehicle.type' },
+    { label: 'Vehicle - Manufacturer', value: 'vehicle.manufacturer' },
+    { label: 'Vehicle - Model', value: 'vehicle.model' },
+    { label: 'Vehicle - VIN', value: 'vehicle.vin' },
+    { label: 'Vehicle - Fuel', value: 'vehicle.fuel' },
+
+    // Custom - Medical
+    { label: 'Medical - Blood Type', value: 'custom.bloodType' },
+    { label: 'Medical - Vaccine Name', value: 'custom.vaccine' },
+    { label: 'Medical - Diagnosis', value: 'custom.diagnosis' },
+
+    // Custom - Education
+    { label: 'Education - University', value: 'custom.university' },
+    { label: 'Education - Degree', value: 'custom.degree' },
+    { label: 'Education - GPA', value: 'custom.gpa' },
+    { label: 'Education - Course', value: 'custom.course' },
+
+    // Custom - Insurance
+    { label: 'Insurance - Policy Number', value: 'custom.policy' },
+    { label: 'Insurance - Policy Type', value: 'custom.policyType' },
+    { label: 'Insurance - Claim Number', value: 'custom.claimNumber' },
+
+    // Custom - ID Numbers
+    { label: 'ID - SSN', value: 'custom.ssn' },
+    { label: 'ID - Passport Number', value: 'custom.passport' },
+    { label: 'ID - Driver License', value: 'custom.driverLicense' },
 ];
 
 export const DataGenerator: React.FC = () => {
@@ -101,11 +185,50 @@ export const DataGenerator: React.FC = () => {
     const generateValue = (method: string) => {
         // Handle custom domains
         if (method === 'custom.vaccine') {
-            const vaccines = ['Pfizer', 'Moderna', 'AstraZeneca', 'J&J', 'Sinovac'];
+            const vaccines = ['Pfizer', 'Moderna', 'AstraZeneca', 'J&J', 'Sinovac', 'Novavax', 'Sputnik V'];
             return vaccines[Math.floor(Math.random() * vaccines.length)];
         }
         if (method === 'custom.policy') {
             return 'POL-' + faker.string.alphanumeric(8).toUpperCase();
+        }
+        if (method === 'custom.bloodType') {
+            const bloodTypes = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
+            return bloodTypes[Math.floor(Math.random() * bloodTypes.length)];
+        }
+        if (method === 'custom.diagnosis') {
+            const diagnoses = ['Hypertension', 'Type 2 Diabetes', 'Asthma', 'Migraine', 'Arthritis', 'Depression', 'Anxiety', 'GERD'];
+            return diagnoses[Math.floor(Math.random() * diagnoses.length)];
+        }
+        if (method === 'custom.university') {
+            const universities = ['Harvard University', 'MIT', 'Stanford University', 'Oxford University', 'Cambridge University', 'Yale University', 'Princeton University', 'Columbia University'];
+            return universities[Math.floor(Math.random() * universities.length)];
+        }
+        if (method === 'custom.degree') {
+            const degrees = ['Bachelor of Science', 'Bachelor of Arts', 'Master of Science', 'Master of Arts', 'MBA', 'PhD', 'Associate Degree'];
+            return degrees[Math.floor(Math.random() * degrees.length)];
+        }
+        if (method === 'custom.gpa') {
+            return (Math.random() * 1.5 + 2.5).toFixed(2); // GPA between 2.5 and 4.0
+        }
+        if (method === 'custom.course') {
+            const courses = ['Computer Science', 'Mathematics', 'Physics', 'Chemistry', 'Biology', 'Engineering', 'Business Administration', 'Psychology', 'Economics', 'Literature'];
+            return courses[Math.floor(Math.random() * courses.length)];
+        }
+        if (method === 'custom.policyType') {
+            const policyTypes = ['Life Insurance', 'Health Insurance', 'Auto Insurance', 'Home Insurance', 'Travel Insurance', 'Disability Insurance'];
+            return policyTypes[Math.floor(Math.random() * policyTypes.length)];
+        }
+        if (method === 'custom.claimNumber') {
+            return 'CLM-' + faker.string.numeric(10);
+        }
+        if (method === 'custom.ssn') {
+            return faker.string.numeric(3) + '-' + faker.string.numeric(2) + '-' + faker.string.numeric(4);
+        }
+        if (method === 'custom.passport') {
+            return faker.string.alpha(2).toUpperCase() + faker.string.numeric(7);
+        }
+        if (method === 'custom.driverLicense') {
+            return faker.string.alpha(1).toUpperCase() + faker.string.numeric(7);
         }
 
         // Handle faker

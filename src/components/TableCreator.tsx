@@ -8,7 +8,7 @@ export const TableCreator: React.FC = () => {
     const [status, setStatus] = useState<{ type: 'success' | 'error', message: string } | null>(null);
 
     const addColumn = () => {
-        setColumns([...columns, { column_name: '', data_type: 'VARCHAR(255)' }]);
+        setColumns([...columns, { column_name: '', data_type: 'VARCHAR(100)' }]);
     };
 
     const removeColumn = (index: number) => {
@@ -80,13 +80,39 @@ export const TableCreator: React.FC = () => {
                                 onChange={e => updateColumn(idx, 'data_type', e.target.value)}
                                 className="w-1/3 bg-gray-900 border border-gray-600 rounded px-3 py-2 text-white"
                             >
-                                <option value="SERIAL PRIMARY KEY">Serial PK</option>
-                                <option value="VARCHAR(255)">Text</option>
-                                <option value="INTEGER">Integer</option>
-                                <option value="BOOLEAN">Boolean</option>
-                                <option value="DATE">Date</option>
-                                <option value="TIMESTAMP">Timestamp</option>
-                                <option value="TEXT">Long Text</option>
+                                {/* Primary Keys */}
+                                <option value="SERIAL PRIMARY KEY">SERIAL PRIMARY KEY - Auto-increment ID</option>
+                                <option value="BIGSERIAL PRIMARY KEY">BIGSERIAL PRIMARY KEY - Large Auto-increment ID</option>
+
+                                {/* Numeric Types */}
+                                <option value="SMALLINT">SMALLINT - Small Integer (-32,768 to 32,767)</option>
+                                <option value="INTEGER">INTEGER - Standard Integer</option>
+                                <option value="BIGINT">BIGINT - Large Integer</option>
+                                <option value="DECIMAL(10,2)">DECIMAL(10,2) - Exact Decimal (10 digits, 2 decimal)</option>
+                                <option value="NUMERIC(10,2)">NUMERIC(10,2) - Exact Numeric (10 digits, 2 decimal)</option>
+                                <option value="REAL">REAL - Float (4 bytes)</option>
+                                <option value="DOUBLE PRECISION">DOUBLE PRECISION - Float (8 bytes)</option>
+
+                                {/* Character Types */}
+                                <option value="VARCHAR(50)">VARCHAR(50) - Variable Text (50 chars)</option>
+                                <option value="VARCHAR(100)">VARCHAR(100) - Variable Text (100 chars)</option>
+                                <option value="VARCHAR(255)">VARCHAR(255) - Variable Text (255 chars)</option>
+                                <option value="CHAR(10)">CHAR(10) - Fixed Text (10 chars)</option>
+                                <option value="TEXT">TEXT - Unlimited Text</option>
+
+                                {/* Date & Time */}
+                                <option value="DATE">DATE - Date Only</option>
+                                <option value="TIME">TIME - Time Only</option>
+                                <option value="TIMESTAMP">TIMESTAMP - Date & Time</option>
+                                <option value="TIMESTAMPTZ">TIMESTAMPTZ - Date & Time with Timezone</option>
+
+                                {/* Boolean */}
+                                <option value="BOOLEAN">BOOLEAN - True/False</option>
+
+                                {/* Other Types */}
+                                <option value="UUID">UUID - Unique Identifier</option>
+                                <option value="JSON">JSON - JSON Data</option>
+                                <option value="JSONB">JSONB - Binary JSON (faster)</option>
                             </select>
                             <button
                                 onClick={() => removeColumn(idx)}
