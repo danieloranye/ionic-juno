@@ -22,8 +22,9 @@ function App() {
       } else {
         setError(res.error || 'Failed to connect');
       }
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Unknown error';
+      setError(message);
     } finally {
       setIsLoading(false);
     }

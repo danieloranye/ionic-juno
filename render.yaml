@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: ionic-juno
+    plan: free
+    runtime: node
+    buildCommand: npm install --include=dev && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: ionic-juno-db
+          property: connectionString
+
+databases:
+  - name: ionic-juno-db
+    plan: free # Only available in some regions, or use 'starter' 
