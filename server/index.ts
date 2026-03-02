@@ -1,9 +1,15 @@
 import express from 'express';
 import cors from 'cors';
 import { Client } from 'pg';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
-const port = 3004;
+const port = process.env.PORT || 3004;
+const isProduction = process.env.NODE_ENV === 'production';
 
 // Enable CORS for all origins (development)
 app.use(cors({
@@ -120,6 +126,15 @@ app.post('/api/generate', async (req, res) => {
         res.status(500).json({ success: false, error: errorMessage });
     }
 });
+
+if (isProduction) {
+    app.use(express.static(path.join(__dirname, '../dist')));
+    app.get('*', (req, res) => {
+        if (!req.path.startsWith('/api')) {
+            res.sendFile(path.join(__dirname, '../dist/index.html'));
+        }
+    });
+}
 
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
