@@ -15,14 +15,15 @@ const handleResponse = async (res: Response) => {
     return res.json();
 };
 
-const handleFetchError = (error: any) => {
-    if (error.message.includes('Failed to fetch')) {
+const handleFetchError = (error: unknown) => {
+    const message = error instanceof Error ? error.message : String(error);
+    if (message.includes('Failed to fetch')) {
         return {
             success: false,
             error: 'Cannot connect to server. Make sure the backend is running on port 3004.'
         };
     }
-    return { success: false, error: error.message };
+    return { success: false, error: message };
 };
 
 export const api = {
@@ -66,7 +67,7 @@ export const api = {
             return handleFetchError(error);
         }
     },
-    generateData: async (data: { table: string; rows: any[] }) => {
+    generateData: async (data: { table: string; rows: Record<string, unknown>[] }) => {
         try {
             const res = await fetch(`${API_URL}/generate`, {
                 method: 'POST',

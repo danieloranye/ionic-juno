@@ -37,8 +37,9 @@ export const TableCreator: React.FC = () => {
             } else {
                 setStatus({ type: 'error', message: res.error || 'Failed to create table' });
             }
-        } catch (err: any) {
-            setStatus({ type: 'error', message: err.message });
+        } catch (err) {
+            const message = err instanceof Error ? err.message : 'Unknown error';
+            setStatus({ type: 'error', message });
         }
     };
 

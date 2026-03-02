@@ -40,9 +40,10 @@ app.post('/api/connect', async (req, res) => {
         dbClient = new Client(req.body);
         await dbClient.connect();
         res.json({ success: true });
-    } catch (error: any) {
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         console.error('Database connection failed:', error);
-        res.status(500).json({ success: false, error: error.message });
+        res.status(500).json({ success: false, error: errorMessage });
     }
 });
 
@@ -56,8 +57,9 @@ app.get('/api/tables', async (req, res) => {
       WHERE table_schema = 'public'
     `);
         res.json({ success: true, tables: result.rows.map(r => r.table_name) });
-    } catch (error: any) {
-        res.status(500).json({ success: false, error: error.message });
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        res.status(500).json({ success: false, error: errorMessage });
     }
 });
 
@@ -71,8 +73,9 @@ app.get('/api/columns/:table', async (req, res) => {
       WHERE table_schema = 'public' AND table_name = $1
     `, [req.params.table]);
         res.json({ success: true, columns: result.rows });
-    } catch (error: any) {
-        res.status(500).json({ success: false, error: error.message });
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        res.status(500).json({ success: false, error: errorMessage });
     }
 });
 
@@ -83,8 +86,9 @@ app.post('/api/create-table', async (req, res) => {
     try {
         await dbClient.query(sql);
         res.json({ success: true });
-    } catch (error: any) {
-        res.status(500).json({ success: false, error: error.message });
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        res.status(500).json({ success: false, error: errorMessage });
     }
 });
 
@@ -101,18 +105,19 @@ app.post('/api/generate', async (req, res) => {
 
         await dbClient.query('BEGIN');
 
-        for (const row of data) {
+        for (const row of data as Record<string, unknown>[]) {
             const values = columns.map(c => row[c]);
-            const placeholders = values.map((_: any, i: number) => `$${i + 1}`).join(', ');
+            const placeholders = values.map((_, i) => `$${i + 1}`).join(', ');
             const query = `INSERT INTO "${table}" (${colString}) VALUES (${placeholders})`;
             await dbClient.query(query, values);
         }
 
         await dbClient.query('COMMIT');
         res.json({ success: true, count: data.length });
-    } catch (error: any) {
-        await dbClient.query('ROLLBACK');
-        res.status(500).json({ success: false, error: error.message });
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        await dbClient!.query('ROLLBACK');
+        res.status(500).json({ success: false, error: errorMessage });
     }
 });
 

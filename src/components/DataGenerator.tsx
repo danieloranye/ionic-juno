@@ -156,7 +156,7 @@ export const DataGenerator: React.FC = () => {
         try {
             const data = [];
             for (let i = 0; i < rowCount; i++) {
-                const row: any = {};
+                const row: Record<string, unknown> = {};
                 for (const col of columns) {
                     const method = mappings[col.column_name];
                     if (method) {
@@ -175,8 +175,9 @@ export const DataGenerator: React.FC = () => {
                 setLog(prev => [...prev, `Error: ${res.error}`]);
             }
 
-        } catch (err: any) {
-            setLog(prev => [...prev, `Error: ${err.message}`]);
+        } catch (err) {
+            const message = err instanceof Error ? err.message : 'Unknown error';
+            setLog(prev => [...prev, `Error: ${message}`]);
         } finally {
             setIsGenerating(false);
         }
@@ -234,7 +235,7 @@ export const DataGenerator: React.FC = () => {
         // Handle faker
         const parts = method.split('.');
         if (parts.length === 2) {
-            // @ts-ignore
+            // @ts-expect-error - dynamic faker call
             return faker[parts[0]][parts[1]]();
         }
         return null;
