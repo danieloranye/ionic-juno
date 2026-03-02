@@ -129,7 +129,7 @@ app.post('/api/generate', async (req, res) => {
 
 if (isProduction) {
     app.use(express.static(path.join(__dirname, '../dist')));
-    app.get('*', (req, res) => {
+    app.get('*splat', (req, res) => {
         if (!req.path.startsWith('/api')) {
             res.sendFile(path.join(__dirname, '../dist/index.html'));
         }
