@@ -28,12 +28,8 @@ app.use((req, res, next) => {
 
 let dbClient: Client | null = null;
 
-// Health check
-app.get('/', (req, res) => {
-    res.json({ status: 'ok', message: 'PostgreSQL Data Generator API' });
-});
-
-app.get('/api', (req, res) => {
+// API Status check
+app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', message: 'API is running' });
 });
 
