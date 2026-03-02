@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: [ "main", "master", "Generate-data-parameters" ]
   pull_request:
-    branches: [ "main", "master" ]
+    branches: [ "main", "master", "Generate-data-parameters" ]
 
 jobs:
   build:
@@ -28,6 +28,9 @@ jobs:
 
     - name: Lint
       run: npm run lint
+
+    - name: Test
+      run: npm test
 
     - name: Build
       run: npm run build
