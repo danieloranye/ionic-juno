@@ -1,6 +1,6 @@
 import type { DBConfig } from '../types';
 
-const API_URL = 'http://localhost:3004/api';
+const API_URL = '/api';
 
 const handleResponse = async (res: Response) => {
     if (!res.ok) {
